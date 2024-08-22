@@ -26,8 +26,12 @@ module TestBoosters
       def rspec_options
         @rspec_options ||= begin
           output_formatter = ENV.fetch("TB_RSPEC_FORMATTER", "documentation")
-          # rubocop:disable LineLength
-          "#{ENV["TB_RSPEC_OPTIONS"]} --format #{output_formatter} --require #{formatter_path} --format SemaphoreFormatter --out #{report_path}"
+          if ENV["TB_RSPEC_DISABLE_SEMAPHORE_REPORT"]
+            "#{ENV["TB_RSPEC_OPTIONS"]} --format #{output_formatter}"
+          else
+            # rubocop:disable LineLength
+            "#{ENV["TB_RSPEC_OPTIONS"]} --format #{output_formatter} --require #{formatter_path} --format SemaphoreFormatter --out #{report_path}"
+          end
         end
       end
 
