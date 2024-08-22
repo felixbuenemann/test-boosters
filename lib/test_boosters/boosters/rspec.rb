@@ -1,3 +1,5 @@
+require 'rspec/core/version'
+
 module TestBoosters
   module Boosters
     class Rspec < Base
@@ -38,7 +40,7 @@ module TestBoosters
       end
 
       def formatter_path
-        @formatter_path ||= File.join(::TestBoosters::ROOT_PATH, "rspec_formatters/semaphore_rspec3_json_formatter.rb")
+        @formatter_path ||= File.join(::TestBoosters::ROOT_PATH, "rspec_formatters/semaphore_rspec#{rspec_version}_json_formatter.rb")
       end
 
       def file_pattern
@@ -47,6 +49,12 @@ module TestBoosters
 
       def exclude_pattern
         ENV["TEST_BOOSTERS_RSPEC_TEST_EXCLUDE_PATTERN"]
+      end
+
+      private
+
+      def rspec_version
+        @rspec_version ||= ::RSpec::Core::Version::STRING.start_with?("2.") ? 2 : 3
       end
     end
   end
